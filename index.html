@@ -1,0 +1,109 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Avant - Line of Credit Test</title>
+    <script src="javascripts/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="bootstrap-3.3.4-dist/css/bootstrap.min.css">
+    <script src="bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
+    <script src="javascripts/angular.min.js"></script>
+</head>
+<body>
+
+<div class="container" ng-app="avantLOCapp" ng-controller="avantLOCCtrl">
+    <h1>Avant: Line of Credit Programming Challenge</h1><hr>
+
+    <div id="create-account-section" style="padding-bottom: 50px;">
+        <h2>Create Account</h2>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="inputCreditLimit" class="col-sm-2 control-label">Credit Limit:</label>
+                <div class="col-sm-3 input-group">
+                    <div class="input-group-addon">$</div>
+                    <input type="number" class="form-control" id="inputCreditLimit" ng-model="inputs.credit_limit" min="0.00" max="10000" step="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputAPR" class="col-sm-2 control-label">APR:</label>
+                <div class="col-sm-1 input-group">
+                    <input type="text" class="form-control" id="inputAPR" ng-model="inputs.APR">
+                    <div class="input-group-addon">%</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputInitialBalance" class="col-sm-2 control-label">Initial Withdrawal:</label>
+                <div class="col-sm-3 input-group">
+                    <div class="input-group-addon">$</div>
+                    <input type="number" class="form-control" id="inputInitialBalance" ng-model="inputs.initial_balance" min="0.00" max="10000" step="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-5 input-group">
+                    <button class="btn btn-primary" ng-click="initiate_account()">Create Line of Credit Account</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div id="account-details-section" ng-show="account_initiated">
+        <h2>Account Details</h2>
+        <div class="container" id="account-detail">
+            <div class="col-sm-2"><b>Day Count:</b></div><div class="col-sm-10"><b>{{ day_count }}</b></div>
+            <div class="col-sm-10 col-sm-offset-2" style="margin-bottom: 25px;"><button class="btn btn-primary" ng-click="close_day()">Next Day >></button></div>
+            <div class="col-sm-2"><b>Credit Limit:</b></div><div class="col-sm-2">${{ account.credit_limit }}</div><div class="col-sm-2"><b>Current Balance:</b></div><div class="col-sm-6">${{ account.balance }}</div>
+            <div class="col-sm-2"><b>APR:</b></div><div class="col-sm-2">{{ account.APR * 100 }}%</div><div class="col-sm-2"><b>Total Accrued Interest:</b></div><div class="col-sm-6">${{ account.accrued_interest_balance }}</div>
+        </div>
+
+        <div id="actions" style="margin-top: 40px;">
+            <h3>Withdraw / Payment Actions</h3>
+            <form class="form-inline" name="formPaymentWithdraw">
+                <div class="form-group">
+                    <label for="inputMakePayment" class="control-label">Make Payment:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">$</div>
+                        <input type="number" class="form-control" id="inputMakePayment" ng-model="inputs.payment_amount" min="0.00" max="10000" step="1">
+                    </div>
+                    <button class="btn btn-success" ng-click="make_payment()">Make Payment</button>
+                </div>
+                <div class="form-group">
+                    <label for="inputWithdrawFunds" class="control-label">Withdraw:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">$</div>
+                        <input type="text" class="form-control" id="inputWithdrawFunds" ng-model="inputs.withdrawal_amount">
+                    </div>
+                    <button class="btn btn-danger" ng-click="make_withdrawal()">Withdraw</button>
+                </div>
+                <p class="error" ng-show="!payment_field_valid()">Please enter a payment amount below the account balance.</p>
+                <p class="error" ng-show="!withdraw_field_valid()">The amount you wish to withdraw exceeds the credit limit.</p>
+            </form>
+        </div>
+
+        <div id="ledger" style="margin-top: 40px;">
+            <h3>Ledger</h3>
+            <table width="80%" class="table">
+                <thead>
+                <th width="10%">Day</th>
+                <th width="20%">Action</th>
+                <th width="20%" class="text-right">Debit / (Credit)</th>
+                <th width="20%" class="text-right">Accrued Interest</th>
+                <th width="20%" class="text-right">Resulting Loan Balance</th>
+                </thead>
+                <tr ng-repeat="journal_entry in account.ledger">
+                    <td>{{ journal_entry.day }}</td>
+                    <td>{{ journal_entry.action }}</td>
+                    <td class="text-right">{{ journal_entry.amount }}</td>
+                    <td class="text-right">{{ journal_entry.accrued_interest }}</td>
+                    <td class="text-right">{{ journal_entry.balance }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="javascripts/avantLOCController.js"></script>
+
+</body>
+</html>
