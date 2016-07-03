@@ -51,7 +51,7 @@ I chose AngularJS for this because it seemed to be a good tool for the job. The 
 run via a web browser, no server side infrastructure required, and Angular's data binding allows for well structured
 code that is instantaneously response.
 
-Most of the action here driven by the code in ```javascripts/avantLOCController.js```. The requirements did not 
+Most of the action here is driven by the code in ```javascripts/avantLOCController.js```. The requirements did not 
 say the data had to be persistent, handle multiple accounts, or present invoicing. This is just a demo of basic 
 coding logic only. No database. No server side. Reloading the webpage resets the application and all its data! I
 also haven't had enough time to implement extensive validation of the data.
