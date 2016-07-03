@@ -1,5 +1,9 @@
 A coding sample for Avant using a very simple AngularJS implementation.
 
+### Live Demo
+
+To see this program in action: https://wakproductions.github.io/avant_line_of_credit/
+
 ### Functional Requirements
 
     Create an implementation of the following:
